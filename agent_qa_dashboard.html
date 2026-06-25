@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent QA Dashboard · p44 OTR Support</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg:       #07111C;
+    --surface:  #0D1E2E;
+    --card:     #112336;
+    --card2:    #162C40;
+    --border:   #1E3A52;
+    --accent:   #38BDF8;
+    --accent2:  #818CF8;
+    --gold:     #F59E0B;
+    --t1:       #F0F6FF;
+    --t2:       #8FA8C0;
+    --t3:       #4E6A84;
+
+    --green:    #22C55E; --green-bg: #052E16; --green-bd: #166534;
+    --red:      #F87171; --red-bg:   #2D0A0A; --red-bd:   #7F1D1D;
+    --amber:    #FBBF24; --amber-bg: #271900; --amber-bd: #78350F;
+    --orange:   #FB923C; --orange-bg:#2D1200; --orange-bd:#7C2D12;
+    --purple:   #A78BFA; --purple-bg:#1A0D3D; --purple-bd:#4C1D95;
+    --rmk-bg:   #1C1400; --rmk-bd:  #92400E; --rmk-t:   #FDE68A;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--t1);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* ── TOP NAV ── */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .topbar-logo {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--accent); text-transform: uppercase;
+    border: 1px solid var(--accent); border-radius: 4px; padding: 3px 8px;
+  }
+  .topbar-title { font-size: 13px; font-weight: 600; color: var(--t1); }
+  .topbar-sub   { font-size: 11px; color: var(--t3); margin-top: 1px; }
+  .topbar-right { display: flex; gap: 8px; }
+
+  /* ── VERSION TAB BAR ── */
+  .ver-tabbar {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+  }
+  .ver-tabbar-label {
+    font-size: 10px; font-weight: 700; color: var(--t3);
+    text-transform: uppercase; letter-spacing: .1em;
+    margin-right: 6px;
+  }
+  .ver-tab {
+    padding: 7px 20px; border-radius: 7px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border); color: var(--t2);
+    background: transparent; transition: all .15s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .ver-tab:hover  { border-color: var(--accent); color: var(--accent); }
+  .ver-tab.active { background: var(--accent); color: #07111C; border-color: var(--accent); font-weight: 700; }
+
+  /* ── LAYOUT ── */
+  .shell { max-width: 1180px; margin: 0 auto; padding: 28px 24px 60px; }
+
+  /* ── KPI ROW ── */
+  .kpi-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; margin-bottom: 24px; }
+  .kpi {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 4px;
+    position: relative; overflow: hidden;
+  }
+  .kpi::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--kpi-color, var(--accent));
+  }
+  .kpi-val  { font-size: 26px; font-weight: 800; color: var(--kpi-color, var(--accent)); font-family: 'JetBrains Mono', monospace; line-height: 1; }
+  .kpi-lbl  { font-size: 10px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; }
+  .kpi-sub  { font-size: 11px; color: var(--t2); margin-top: 4px; }
+
+  /* ── VERSION PANEL ── */
+  .ver-panel { display: none; }
+  .ver-panel.active { display: block; }
+
+  .panel-header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px 12px 0 0;
+    padding: 18px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid var(--accent);
+  }
+  .panel-title { font-size: 20px; font-weight: 700; color: var(--t1); }
+  .panel-date  { font-size: 16px; font-weight: 700; color: var(--accent2); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  .panel-meta  { font-size: 11px; color: var(--t3); margin-top: 3px; }
+  .panel-kpis  { display: flex; gap: 10px; }
+  .mini-kpi {
+    padding: 8px 16px; border-radius: 8px; text-align: center;
+    border: 1px solid; min-width: 80px;
+  }
+  .mini-kpi-val { font-size: 18px; font-weight: 800; font-family: 'JetBrains Mono', monospace; line-height:1; }
+  .mini-kpi-lbl { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; opacity: .7; }
+
+  /* ── TWO-COL BODY ── */
+  .panel-body {
+    background: var(--surface);
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 12px 12px;
+    padding: 20px 24px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+
+  /* ── SECTION ── */
+  .section { display: flex; flex-direction: column; gap: 0; }
+  .section + .section { margin-top: 16px; }
+
+  .sec-title {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; padding: 8px 12px;
+    border-radius: 6px 6px 0 0;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: none;
+  }
+  .sec-title .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── TABLE ── */
+  .tbl { width: 100%; border-collapse: collapse; }
+  .tbl tr:first-child td { border-top: none; }
+  .tbl td {
+    padding: 9px 12px; border-top: 1px solid var(--border);
+    vertical-align: top; font-size: 12px;
+  }
+  .tbl td:first-child {
+    width: 38%; font-weight: 600; color: var(--t2);
+    background: var(--card); white-space: nowrap;
+  }
+  .tbl td:last-child { background: var(--card2); color: var(--t1); }
+  .tbl tr:last-child td:first-child { border-radius: 0 0 0 6px; }
+  .tbl tr:last-child td:last-child  { border-radius: 0 0 6px 0; }
+  .tbl-wrap { border: 1px solid var(--border); border-radius: 0 0 6px 6px; overflow: hidden; }
+
+  /* ── CHIPS ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .chip {
+    background: #0F2A44; border: 1px solid #1D4ED8;
+    color: #93C5FD; border-radius: 5px;
+    padding: 2px 8px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600;
+  }
+
+  /* ── REMARK ROW ── */
+  .rmk-table { width: 100%; border-collapse: collapse; }
+  .rmk-table tr + tr td { border-top: 1px solid var(--border); }
+  .rmk-table td { padding: 10px 12px; vertical-align: top; font-size: 12px; }
+  .rmk-table td:first-child {
+    width: 28%; background: var(--card); color: var(--gold);
+    font-weight: 700; font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+  }
+  .rmk-table td:last-child { background: var(--rmk-bg); color: var(--rmk-t); font-style: italic; border-left: 2px solid var(--amber-bd); }
+  .rmk-star { color: var(--gold); margin-right: 4px; }
+  .rmk-wrap { border: 1px solid var(--amber-bd); border-radius: 0 0 6px 6px; overflow: hidden; }
+
+  /* ── TREE ── */
+  .tree { display: flex; flex-direction: column; gap: 6px; }
+  .tree-node {
+    border-radius: 8px; border-left: 4px solid;
+    padding: 10px 12px; position: relative;
+  }
+  .tree-node-label { font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tree-node-sub   { font-size: 10px; color: var(--t3); margin-top: 2px; }
+  .tree-node-chips { margin-top: 6px; }
+  .tree-node-child {
+    margin-left: 18px; border-radius: 6px; border-left: 3px solid;
+    padding: 8px 10px; margin-top: 4px;
+  }
+  .tree-node-child .tree-node-label { font-size: 11.5px; }
+
+  .n-green  { background: var(--green-bg);  border-color: var(--green);  color: var(--green);  }
+  .n-red    { background: var(--red-bg);    border-color: var(--red);    color: var(--red);    }
+  .n-amber  { background: var(--amber-bg);  border-color: var(--amber);  color: var(--amber);  }
+  .n-orange { background: var(--orange-bg); border-color: var(--orange); color: var(--orange); }
+  .n-purple { background: var(--purple-bg); border-color: var(--purple); color: var(--purple); }
+
+  /* ── PILL ── */
+  .pill {
+    display: inline-flex; align-items: center;
+    padding: 2px 9px; border-radius: 20px;
+    font-size: 10px; font-weight: 700; line-height: 1.6;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .pill-green  { background: var(--green);  color: #052E16; }
+  .pill-red    { background: var(--red);    color: #1a0000; }
+  .pill-amber  { background: var(--amber);  color: #1a1000; }
+  .pill-orange { background: var(--orange); color: #1a0800; }
+  .pill-purple { background: var(--purple); color: #0d0520; }
+  .pill-blue   { background: var(--accent); color: #07111C; }
+
+  /* ── REMARK INLINE ── */
+  .rmk-inline {
+    background: var(--rmk-bg); border: 1px solid var(--rmk-bd);
+    border-radius: 5px; padding: 5px 8px; margin-top: 6px;
+    font-size: 11px; font-style: italic; color: var(--rmk-t);
+  }
+  .rmk-inline::before { content: '★ '; color: var(--gold); font-style: normal; font-weight: 700; }
+
+  /* ── BREAKDOWN BAR ── */
+  .bk-bar { display: flex; border-radius: 6px; overflow: hidden; height: 22px; margin-top: 8px; }
+  .bk-seg { display: flex; align-items: center; justify-content: center;
+            font-size: 10px; font-weight: 800; color: #07111C; transition: opacity .2s; }
+  .bk-seg:hover { opacity: .85; }
+  .bk-labels { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  .bk-lbl { font-size: 10px; display: flex; align-items: center; gap: 4px; }
+  .bk-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* ── FAIL ROW ── */
+  .fail-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; }
+  .fail-row + .fail-row { border-top: 1px solid var(--border); }
+  .fail-name { flex: 1; font-size: 12px; color: var(--t2); font-weight: 600; }
+  .fail-bar  { width: 80px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .fail-fill { height: 100%; background: var(--red); border-radius: 3px; }
+  .fail-pct  { font-size: 11px; color: var(--red); font-weight: 700; min-width: 36px; text-align: right; font-family: 'JetBrains Mono', monospace; }
+
+  /* ── DIVIDER ── */
+  .col-divider { border: none; border-left: 1px solid var(--border); }
+
+  /* ── OVERALL TABLE ── */
+  .ov-table { width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+  .ov-table th {
+    background: var(--card); color: var(--accent2); font-size: 10px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+    padding: 10px 14px; text-align: left;
+  }
+  .ov-table td {
+    background: var(--surface); padding: 10px 14px; font-size: 12px;
+    border-top: 1px solid var(--border); color: var(--t1);
+  }
+  .ov-table tr:nth-child(even) td { background: var(--card); }
+  .ov-table td:first-child { font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+
+  .stat-good { color: var(--green); font-weight: 700; }
+  .stat-warn { color: var(--amber); font-weight: 700; }
+  .stat-bad  { color: var(--red);   font-weight: 700; }
+
+  /* ── SECTION WRAPPER ── */
+  .sec-wrap { margin-bottom: 14px; }
+  .sec-hdr {
+    padding: 8px 14px; border-radius: 7px 7px 0 0;
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ── TOP NAV ─────────────────────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">p44</div>
+    <div>
+      <div class="topbar-title">Agent QA Dashboard</div>
+      <div class="topbar-sub">OTR Support · PUSH API Tracking Investigation Quality · 18 Jun – 25 Jun 2026</div>
+    </div>
+  </div>
+  <div class="topbar-right"></div>
+</div>
+
+<!-- ── VERSION TAB BAR ─────────────────────────────────────────────────────── -->
+<div class="ver-tabbar">
+  <span class="ver-tabbar-label">View:</span>
+  <button class="ver-tab active" onclick="showVer('all')">Overview</button>
+  <button class="ver-tab" onclick="showVer('v3')">V3</button>
+  <button class="ver-tab" onclick="showVer('v4')">V4</button>
+  <button class="ver-tab" onclick="showVer('v5')">V5</button>
+  <button class="ver-tab" onclick="showVer('v6')">V6</button>
+  <button class="ver-tab" onclick="showVer('eng')" style="margin-left:auto;border-color:var(--gold);color:var(--gold);">⚙ Engineering Feedback</button>
+</div>
+
+<div class="shell">
+
+<!-- ── KPI STRIP ─────────────────────────────────────────────────────────────── -->
+<div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+  <div class="kpi" style="--kpi-color:var(--accent)">
+    <div class="kpi-lbl">Versions Tested</div>
+    <div class="kpi-val">4</div>
+    <div class="kpi-sub">V3 · V4 · V5 · V6</div>
+  </div>
+  <div class="kpi" style="--kpi-color:var(--accent2)">
+    <div class="kpi-lbl">Total Tickets Tested</div>
+    <div class="kpi-val">30</div>
+    <div class="kpi-sub">Across all versions</div>
+  </div>
+  <div class="kpi" style="--kpi-color:var(--green)">
+    <div class="kpi-lbl">Triage %</div>
+    <div class="kpi-val">90%</div>
+    <div class="kpi-sub">27 of 30 correctly triaged</div>
+  </div>
+  <div class="kpi" style="--kpi-color:var(--amber)">
+    <div class="kpi-lbl">Correct Investigation %</div>
+    <div class="kpi-val">22%</div>
+    <div class="kpi-sub">6 of 27 eligible tickets</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     OVERVIEW PANEL
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="panel-all" class="ver-panel active">
+
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">All Versions — Comparative Overview</div>
+      <div class="panel-date">18 Jun 2026 – 25 Jun 2026</div>
+      <div class="panel-meta">Versions 3, 4, 5, 6  ·  p44 OTR Support</div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:20px 24px;">
+
+    <table class="ov-table">
+      <thead>
+        <tr>
+          <th>Version</th>
+          <th>Date</th>
+          <th>Tickets</th>
+          <th>Triage Yes</th>
+          <th>Triage %</th>
+          <th>Inv Eligible</th>
+          <th>Correct Inv</th>
+          <th>Inv %</th>
+          <th>Fail Reasons</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>V3</td>
+          <td>18-Jun-26</td>
+          <td>5</td>
+          <td>5</td>
+          <td><span class="stat-good">100%</span></td>
+          <td>5</td>
+          <td>0</td>
+          <td><span class="stat-bad">0%</span></td>
+          <td>Unknown ×4, Image/Report ×1</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>V4</td>
+          <td>22-Jun-26</td>
+          <td>5</td>
+          <td>4</td>
+          <td><span class="stat-warn">80%</span></td>
+          <td>4</td>
+          <td>0</td>
+          <td><span class="stat-bad">0%</span></td>
+          <td>Unknown ×4</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>V5</td>
+          <td>23-Jun-26</td>
+          <td>10</td>
+          <td>8</td>
+          <td><span class="stat-warn">80%</span></td>
+          <td>8</td>
+          <td>2</td>
+          <td><span class="stat-warn">25%</span></td>
+          <td>Unknown ×3, Image/Report ×4</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>V6</td>
+          <td>25-Jun-26</td>
+          <td>10</td>
+          <td>10</td>
+          <td><span class="stat-good">100%</span></td>
+          <td>10</td>
+          <td>4</td>
+          <td><span class="stat-warn">40%</span></td>
+          <td>Unknown ×2</td>
+          <td>4</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Trend note -->
+    <div style="margin-top:16px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--t2);display:flex;gap:24px;flex-wrap:wrap;">
+      <span>📈 <strong style="color:var(--green)">Triage</strong> improved from 80% → 100% (V5→V6)</span>
+      <span>📈 <strong style="color:var(--amber)">Investigation</strong> improved from 0% → 40% (V3→V6)</span>
+      <span>⚠️ <strong style="color:var(--red)">Unknown</strong> fail reason persists across all versions</span>
+      <span>✅ <strong style="color:var(--green)">V6</strong> is the best-performing version to date</span>
+    </div>
+
+    <!-- Investigation breakdown bars per version -->
+    <div style="margin-top:20px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:12px;">Investigation Breakdown by Version</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V3</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
+            <div class="bk-seg" style="background:var(--red);width:20%">1</div>
+            <div class="bk-seg" style="background:var(--amber);width:80%;color:#07111C">4</div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);width:120px;">1 Incorrect · 4 Not Inv</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V4</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
+            <div class="bk-seg" style="background:var(--amber);width:100%;color:#07111C">4</div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);width:120px;">4 Not Investigated</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V5</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
+            <div class="bk-seg" style="background:var(--green);width:25%">2</div>
+            <div class="bk-seg" style="background:var(--amber);width:12.5%">1</div>
+            <div class="bk-seg" style="background:var(--amber);width:62.5%;opacity:.6;color:#07111C">5</div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);width:120px;">2 Correct · 1 Partial · 5 Not Inv</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V6</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
+            <div class="bk-seg" style="background:var(--green);width:40%">4</div>
+            <div class="bk-seg" style="background:var(--red);width:10%">1</div>
+            <div class="bk-seg" style="background:var(--orange);width:30%;color:#07111C">3</div>
+            <div class="bk-seg" style="background:var(--amber);width:20%;color:#07111C">2</div>
+          </div>
+          <div style="font-size:10px;color:var(--t3);width:120px;">4 Correct · 1 Incorr · 3 Half · 2 Not Inv</div>
+        </div>
+
+      </div>
+      <!-- legend -->
+      <div class="bk-labels" style="margin-top:10px;">
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--green)"></div><span style="color:var(--t2)">Correct</span></div>
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--red)"></div><span style="color:var(--t2)">Incorrect</span></div>
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--orange)"></div><span style="color:var(--t2)">Half</span></div>
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Partial / Not Investigated</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     VERSION PANELS MACRO
+════════════════════════════════════════════════════════════════════════════ -->
+
+<!-- ── V3 ─────────────────────────────────────────────────────────────────── -->
+<div id="panel-v3" class="ver-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Version 3 — Agent QA Run</div>
+      <div class="panel-date">18 Jun 2026</div>
+      <div class="panel-meta">p44 OTR Support  ·  PUSH API Tracking</div>
+    </div>
+    <div class="panel-kpis">
+      <div class="mini-kpi" style="border-color:var(--accent);color:var(--accent)">
+        <div class="mini-kpi-val">5</div><div class="mini-kpi-lbl">Tickets</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--green);color:var(--green)">
+        <div class="mini-kpi-val">100%</div><div class="mini-kpi-lbl">Triage</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--red);color:var(--red)">
+        <div class="mini-kpi-val">0%</div><div class="mini-kpi-lbl">Inv %</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <!-- LEFT -->
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent)">
+          <span>📋</span> Ticket Overview
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Tickets Tested</td><td>5</td></tr>
+            <tr><td>Ticket IDs</td><td><div class="chips"><span class="chip">2377</span><span class="chip">2378</span><span class="chip">2380</span><span class="chip">2384</span><span class="chip">2386</span></div></td></tr>
+            <tr><td>Run Date</td><td>18-Jun-26</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)">
+          <span>✓</span> Triage Accuracy
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Yes / No / OOS</td><td><span class="stat-good">5</span> / 0 / 0</td></tr>
+            <tr><td>Triage %</td><td><span class="stat-good">100%</span> (5 of 5)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">
+          <span>🔍</span> Investigation Quality
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Eligible</td><td>5 tickets</td></tr>
+            <tr><td>Breakdown</td><td>Incorrect: 1  ·  Not Investigated: 4</td></tr>
+            <tr><td>Investigation %</td><td><span class="stat-bad">0%</span> (0 of 5 eligible)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)">
+          <span>⚠</span> Fail Reasons
+        </div>
+        <div class="tbl-wrap" style="overflow:hidden;">
+          <div class="fail-row" style="background:var(--card)">
+            <div class="fail-name">Unknown</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:80%"></div></div>
+            <div class="fail-pct">80%</div>
+            <div style="font-size:11px;color:var(--t3)">4 tickets</div>
+          </div>
+          <div class="fail-row" style="background:var(--card2)">
+            <div class="fail-name">Image / Report shared</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:20%"></div></div>
+            <div class="fail-pct">20%</div>
+            <div style="font-size:11px;color:var(--t3)">1 ticket</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT -->
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">
+          <span>🌿</span> Investigation Tree
+        </div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px;">
+          <div class="tree">
+            <div class="tree-node n-green">
+              <div class="tree-node-label">Triage: Yes <span class="pill pill-green">✓ 5/5</span></div>
+              <div class="tree-node-sub">100% triage accuracy</div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2377</span><span class="chip">2378</span><span class="chip">2380</span><span class="chip">2384</span><span class="chip">2386</span></div></div>
+              <div class="tree-node-child n-red">
+                <div class="tree-node-label">Incorrect Investigation <span class="pill pill-red">✗ 1</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2378</span></div></div>
+              </div>
+              <div class="tree-node-child n-amber">
+                <div class="tree-node-label">AI Not Able to Investigate <span class="pill pill-amber">? 4</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2377</span><span class="chip">2380</span><span class="chip">2384</span><span class="chip">2386</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">Investigation Breakdown</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px 14px;">
+          <div class="bk-bar">
+            <div class="bk-seg" style="background:var(--red);width:20%">1</div>
+            <div class="bk-seg" style="background:var(--amber);width:80%;color:#07111C">4</div>
+          </div>
+          <div class="bk-labels" style="margin-top:8px;">
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--red)"></div><span style="color:var(--t2)">Incorrect (1) — 20%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Not Investigated (4) — 80%</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:4px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:6px;">★ Remarks</div>
+        <div style="color:var(--t3);font-size:12px;font-style:italic;">No remarks recorded for V3.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── V4 ─────────────────────────────────────────────────────────────────── -->
+<div id="panel-v4" class="ver-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Version 4 — Agent QA Run</div>
+      <div class="panel-date">22 Jun 2026</div>
+      <div class="panel-meta">p44 OTR Support  ·  PUSH API Tracking</div>
+    </div>
+    <div class="panel-kpis">
+      <div class="mini-kpi" style="border-color:var(--accent);color:var(--accent)"><div class="mini-kpi-val">5</div><div class="mini-kpi-lbl">Tickets</div></div>
+      <div class="mini-kpi" style="border-color:var(--amber);color:var(--amber)"><div class="mini-kpi-val">80%</div><div class="mini-kpi-lbl">Triage</div></div>
+      <div class="mini-kpi" style="border-color:var(--red);color:var(--red)"><div class="mini-kpi-val">0%</div><div class="mini-kpi-lbl">Inv %</div></div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent)">📋 Ticket Overview</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Tickets Tested</td><td>5</td></tr>
+          <tr><td>Ticket IDs</td><td><div class="chips"><span class="chip">2390</span><span class="chip">2391</span><span class="chip">2392</span><span class="chip">2393</span><span class="chip">2394</span></div></td></tr>
+          <tr><td>Run Date</td><td>22-Jun-26</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">✓ Triage Accuracy</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Yes / No / OOS</td><td>4 / <span class="stat-bad">1</span> / 0</td></tr>
+          <tr><td>Triage %</td><td><span class="stat-warn">80%</span> (4 of 5)</td></tr>
+          <tr><td>Wrong ID</td><td><div class="chips"><span class="chip">2390</span></div> — Random Issue Type misidentified</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">🔍 Investigation Quality</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Eligible</td><td>4 tickets</td></tr>
+          <tr><td>Breakdown</td><td>Not Investigated: 4</td></tr>
+          <tr><td>Investigation %</td><td><span class="stat-bad">0%</span> (0 of 4 eligible)</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)">⚠ Fail Reasons</div>
+        <div class="tbl-wrap" style="overflow:hidden">
+          <div class="fail-row" style="background:var(--card)">
+            <div class="fail-name">Unknown</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:100%"></div></div>
+            <div class="fail-pct">100%</div>
+            <div style="font-size:11px;color:var(--t3)">4 tickets</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">🌿 Investigation Tree</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px;">
+          <div class="tree">
+            <div class="tree-node n-green">
+              <div class="tree-node-label">Triage: Yes <span class="pill pill-green">✓ 4/5</span></div>
+              <div class="tree-node-sub">80% triage accuracy</div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2391</span><span class="chip">2392</span><span class="chip">2393</span><span class="chip">2394</span></div></div>
+              <div class="tree-node-child n-amber">
+                <div class="tree-node-label">AI Not Able to Investigate <span class="pill pill-amber">? 4</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2391</span><span class="chip">2392</span><span class="chip">2393</span><span class="chip">2394</span></div></div>
+              </div>
+            </div>
+            <div class="tree-node n-red">
+              <div class="tree-node-label">Triage: No — Wrong ID <span class="pill pill-red">✗ 1</span></div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2390</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">Investigation Breakdown</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px 14px;">
+          <div class="bk-bar"><div class="bk-seg" style="background:var(--amber);width:100%;color:#07111C">4 Not Investigated</div></div>
+          <div class="bk-labels" style="margin-top:8px;"><div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Not Investigated (4) — 100%</span></div></div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:4px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:6px;">★ Remarks</div>
+        <div style="color:var(--t3);font-size:12px;font-style:italic;">No remarks recorded for V4.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── V5 ─────────────────────────────────────────────────────────────────── -->
+<div id="panel-v5" class="ver-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Version 5 — Agent QA Run</div>
+      <div class="panel-date">23 Jun 2026</div>
+      <div class="panel-meta">p44 OTR Support  ·  PUSH API Tracking</div>
+    </div>
+    <div class="panel-kpis">
+      <div class="mini-kpi" style="border-color:var(--accent);color:var(--accent)"><div class="mini-kpi-val">10</div><div class="mini-kpi-lbl">Tickets</div></div>
+      <div class="mini-kpi" style="border-color:var(--amber);color:var(--amber)"><div class="mini-kpi-val">80%</div><div class="mini-kpi-lbl">Triage</div></div>
+      <div class="mini-kpi" style="border-color:var(--amber);color:var(--amber)"><div class="mini-kpi-val">25%</div><div class="mini-kpi-lbl">Inv %</div></div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent)">📋 Ticket Overview</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Tickets Tested</td><td>10</td></tr>
+          <tr><td>Ticket IDs</td><td><div class="chips"><span class="chip">2385</span><span class="chip">2386</span><span class="chip">2387</span><span class="chip">2388</span><span class="chip">2389</span><span class="chip">2390</span><span class="chip">2391</span><span class="chip">2392</span><span class="chip">2393</span><span class="chip">2394</span></div></td></tr>
+          <tr><td>Run Date</td><td>23-Jun-26</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">✓ Triage Accuracy</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Yes / No / OOS</td><td>8 / <span class="stat-bad">1</span> / <span class="stat-warn">1</span></td></tr>
+          <tr><td>Triage %</td><td><span class="stat-warn">80%</span> (8 of 10)</td></tr>
+          <tr><td>Wrong ID</td><td><div class="chips"><span class="chip">2385</span></div></td></tr>
+          <tr><td>Out of Scope</td><td><div class="chips"><span class="chip">2390</span></div></td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">🔍 Investigation Quality</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Eligible</td><td>8 tickets</td></tr>
+          <tr><td>Breakdown</td><td>Correct: 2  ·  Partial: 1  ·  Not Inv: 5</td></tr>
+          <tr><td>Investigation %</td><td><span class="stat-warn">25%</span> (2 of 8 eligible)</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)">⚠ Fail Reasons</div>
+        <div class="tbl-wrap" style="overflow:hidden">
+          <div class="fail-row" style="background:var(--card)">
+            <div class="fail-name">Image / Report shared</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:57%"></div></div>
+            <div class="fail-pct">57%</div>
+            <div style="font-size:11px;color:var(--t3)">4 tickets</div>
+          </div>
+          <div class="fail-row" style="background:var(--card2)">
+            <div class="fail-name">Unknown</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:43%"></div></div>
+            <div class="fail-pct">43%</div>
+            <div style="font-size:11px;color:var(--t3)">3 tickets</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">🌿 Investigation Tree</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px;">
+          <div class="tree">
+            <div class="tree-node n-green">
+              <div class="tree-node-label">Triage: Yes <span class="pill pill-green">✓ 8/10</span></div>
+              <div class="tree-node-sub">80% triage accuracy</div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2386</span><span class="chip">2387</span><span class="chip">2388</span><span class="chip">2389</span><span class="chip">2391</span><span class="chip">2392</span><span class="chip">2393</span><span class="chip">2394</span></div></div>
+              <div class="tree-node-child n-green">
+                <div class="tree-node-label">Correct Investigation <span class="pill pill-green">✓ 2</span></div>
+                <div class="tree-node-sub">25% of 8 eligible</div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2388</span><span class="chip">2392</span></div></div>
+              </div>
+              <div class="tree-node-child n-amber">
+                <div class="tree-node-label">Partial Investigation <span class="pill pill-amber">~ 1</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2391</span></div></div>
+              </div>
+              <div class="tree-node-child n-amber">
+                <div class="tree-node-label">AI Not Able to Investigate <span class="pill pill-amber">? 5</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2386</span><span class="chip">2387</span><span class="chip">2389</span><span class="chip">2393</span><span class="chip">2394</span></div></div>
+              </div>
+            </div>
+            <div class="tree-node n-red">
+              <div class="tree-node-label">Triage: No <span class="pill pill-red">✗ 1</span></div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2385</span></div></div>
+            </div>
+            <div class="tree-node n-purple">
+              <div class="tree-node-label">Out of Scope <span class="pill pill-purple">— 1</span></div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2390</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">Investigation Breakdown</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px 14px;">
+          <div class="bk-bar">
+            <div class="bk-seg" style="background:var(--green);width:25%">2</div>
+            <div class="bk-seg" style="background:var(--amber);width:12.5%">1</div>
+            <div class="bk-seg" style="background:var(--amber);width:62.5%;opacity:.6;color:#07111C">5</div>
+          </div>
+          <div class="bk-labels" style="margin-top:8px;">
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--green)"></div><span style="color:var(--t2)">Correct (2) — 25%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Partial (1) — 12.5%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber);opacity:.6"></div><span style="color:var(--t2)">Not Investigated (5) — 62.5%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── V6 ─────────────────────────────────────────────────────────────────── -->
+<div id="panel-v6" class="ver-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Version 6 — Agent QA Run</div>
+      <div class="panel-date">25 Jun 2026</div>
+      <div class="panel-meta">p44 OTR Support  ·  PUSH API Tracking</div>
+    </div>
+    <div class="panel-kpis">
+      <div class="mini-kpi" style="border-color:var(--accent);color:var(--accent)"><div class="mini-kpi-val">10</div><div class="mini-kpi-lbl">Tickets</div></div>
+      <div class="mini-kpi" style="border-color:var(--green);color:var(--green)"><div class="mini-kpi-val">100%</div><div class="mini-kpi-lbl">Triage</div></div>
+      <div class="mini-kpi" style="border-color:var(--amber);color:var(--amber)"><div class="mini-kpi-val">40%</div><div class="mini-kpi-lbl">Inv %</div></div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent)">📋 Ticket Overview</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Tickets Tested</td><td>10</td></tr>
+          <tr><td>Ticket IDs</td><td><div class="chips"><span class="chip">2386</span><span class="chip">2387</span><span class="chip">2389</span><span class="chip">2391</span><span class="chip">2393</span><span class="chip">2394</span><span class="chip">2396</span><span class="chip">2397</span><span class="chip">2398</span><span class="chip">2399</span></div></td></tr>
+          <tr><td>Run Date</td><td>25-Jun-26</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)">✓ Triage Accuracy</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Yes / No / OOS</td><td><span class="stat-good">10</span> / 0 / 0</td></tr>
+          <tr><td>Triage %</td><td><span class="stat-good">100%</span> (10 of 10)</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">🔍 Investigation Quality</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Eligible</td><td>10 tickets</td></tr>
+          <tr><td>Breakdown</td><td>Correct: 4  ·  Incorrect: 1  ·  Half: 3  ·  Not Inv: 2</td></tr>
+          <tr><td>Investigation %</td><td><span class="stat-warn">40%</span> (4 of 10 eligible)</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)">⚠ Fail Reasons</div>
+        <div class="tbl-wrap" style="overflow:hidden">
+          <div class="fail-row" style="background:var(--card)">
+            <div class="fail-name">Unknown</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:100%"></div></div>
+            <div class="fail-pct">100%</div>
+            <div style="font-size:11px;color:var(--t3)">2 tickets</div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--rmk-bg);border:1px solid var(--rmk-bd);color:var(--gold)">★ Remarks</div>
+        <div class="rmk-wrap">
+          <table class="rmk-table">
+            <tr><td><span class="rmk-star">★</span>#2387</td><td>Cust reported for 7 carriers but AI only found 2 carriers, we need to involve carriers here</td></tr>
+            <tr><td><span class="rmk-star">★</span>#2393</td><td>Shipment completed before carrier tracking data received, but AI found something different</td></tr>
+            <tr><td><span class="rmk-star">★</span>#2397</td><td>Cust ask to validate the EDI payload is fine to sent milestone and gps update but AI investigate on why not all milestones</td></tr>
+            <tr><td><span class="rmk-star">★</span>#2399</td><td>Issue with carrier data but AI identify engineering fix</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">🌿 Investigation Tree</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px;">
+          <div class="tree">
+            <div class="tree-node n-green">
+              <div class="tree-node-label">Triage: Yes <span class="pill pill-green">✓ 10/10</span></div>
+              <div class="tree-node-sub">100% triage accuracy</div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2386</span><span class="chip">2387</span><span class="chip">2389</span><span class="chip">2391</span><span class="chip">2393</span><span class="chip">2394</span><span class="chip">2396</span><span class="chip">2397</span><span class="chip">2398</span><span class="chip">2399</span></div></div>
+
+              <div class="tree-node-child n-green">
+                <div class="tree-node-label">Correct Investigation <span class="pill pill-green">✓ 4</span></div>
+                <div class="tree-node-sub">40% of 10 eligible</div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2386</span><span class="chip">2391</span><span class="chip">2394</span><span class="chip">2398</span></div></div>
+              </div>
+
+              <div class="tree-node-child n-red">
+                <div class="tree-node-label">Incorrect Investigation <span class="pill pill-red">✗ 1</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2393</span></div></div>
+                <div class="rmk-inline">2393: Shipment completed before carrier tracking data received, but AI found something different</div>
+              </div>
+
+              <div class="tree-node-child n-orange">
+                <div class="tree-node-label">Half Investigation <span class="pill pill-orange">½ 3</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2387</span><span class="chip">2397</span><span class="chip">2399</span></div></div>
+                <div class="rmk-inline">2387: Cust reported 7 carriers but AI only found 2 — carrier involvement needed</div>
+                <div class="rmk-inline">2397: Cust asked to validate EDI payload but AI investigated missing milestones instead</div>
+                <div class="rmk-inline">2399: Carrier data issue but AI identify engineering fix</div>
+              </div>
+
+              <div class="tree-node-child n-amber">
+                <div class="tree-node-label">AI Not Able to Investigate <span class="pill pill-amber">? 2</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2389</span><span class="chip">2396</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">Investigation Breakdown</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px 14px;">
+          <div class="bk-bar">
+            <div class="bk-seg" style="background:var(--green);width:40%">4</div>
+            <div class="bk-seg" style="background:var(--red);width:10%">1</div>
+            <div class="bk-seg" style="background:var(--orange);width:30%;color:#07111C">3</div>
+            <div class="bk-seg" style="background:var(--amber);width:20%;color:#07111C">2</div>
+          </div>
+          <div class="bk-labels" style="margin-top:8px;">
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--green)"></div><span style="color:var(--t2)">Correct (4) — 40%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--red)"></div><span style="color:var(--t2)">Incorrect (1) — 10%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--orange)"></div><span style="color:var(--t2)">Half (3) — 30%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Not Investigated (2) — 20%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /shell -->
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     ENGINEERING FEEDBACK PANEL
+════════════════════════════════════════════════════════════════════════════ -->
+<div id="panel-eng" class="ver-panel">
+
+  <div class="panel-header" style="border-bottom-color:var(--gold);">
+    <div>
+      <div class="panel-title">Engineering Feedback</div>
+      <div class="panel-date" style="color:var(--gold);">Last Version Feedback to Engineering</div>
+      <div class="panel-meta">Items flagged from QA runs for engineering review and action</div>
+    </div>
+    <button id="addFeedbackBtn" onclick="toggleAddForm()" style="
+      background:var(--gold);color:#07111C;border:none;border-radius:8px;
+      padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;
+      font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;
+      transition:opacity .15s;
+    ">＋ Add Feedback</button>
+    <button onclick="exportSaveFile()" style="
+      background:transparent;color:var(--accent2);border:1px solid var(--accent2);border-radius:8px;
+      padding:10px 18px;font-size:12px;font-weight:600;cursor:pointer;
+      font-family:'Inter',sans-serif;transition:all .15s;margin-left:8px;
+    " title="Download this file with all feedback data saved inside it">💾 Save to File</button>
+  </div>
+
+  <!-- ADD FORM -->
+  <div id="addForm" style="display:none;background:var(--surface);border:1px solid var(--gold);border-top:none;padding:20px 24px;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:10px;">New Feedback Item</div>
+    <textarea id="feedbackText" placeholder="Describe the issue, observation, or action item for engineering — no length limit..." style="
+      width:100%;min-height:120px;background:var(--card);border:1px solid var(--border);
+      border-radius:8px;padding:14px;color:var(--t1);font-family:'Inter',sans-serif;
+      font-size:13px;line-height:1.6;resize:vertical;outline:none;
+      transition:border-color .15s;
+    " onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    <div style="display:flex;gap:10px;margin-top:12px;justify-content:flex-end;">
+      <button onclick="cancelAdd()" style="
+        background:transparent;border:1px solid var(--border);color:var(--t2);
+        border-radius:7px;padding:8px 20px;font-size:12px;font-weight:600;
+        cursor:pointer;font-family:'Inter',sans-serif;
+      ">Cancel</button>
+      <button onclick="submitFeedback()" style="
+        background:var(--gold);color:#07111C;border:none;border-radius:7px;
+        padding:8px 24px;font-size:12px;font-weight:700;cursor:pointer;
+        font-family:'Inter',sans-serif;
+      ">Submit Feedback</button>
+    </div>
+  </div>
+
+  <!-- PENDING + COMPLETED LISTS -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-top:none;padding:24px;border-radius:0 0 12px 12px;">
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);">
+        Pending Feedback &amp; Actions
+      </div>
+      <div id="pendingCount" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber);border-radius:20px;padding:1px 10px;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;">0</div>
+    </div>
+
+    <div id="pendingList">
+      <div style="color:var(--t3);font-size:13px;font-style:italic;padding:24px 0;text-align:center;border:1px dashed var(--border);border-radius:8px;">
+        No pending feedback yet. Click <strong style="color:var(--gold)">＋ Add Feedback</strong> to log the first item.
+      </div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);">
+          Completed Feedback &amp; Actions
+        </div>
+        <div id="completedCount" style="background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green);border-radius:20px;padding:1px 10px;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;">0</div>
+      </div>
+      <div id="completedList">
+        <div style="color:var(--t3);font-size:13px;font-style:italic;padding:24px 0;text-align:center;border:1px dashed var(--border);border-radius:8px;">
+          No completed items yet.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /shell -->
+
+<script>
+function showVer(id) {
+  document.querySelectorAll('.ver-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ver-tab').forEach(t => {
+    t.classList.remove('active');
+    t.style.background = 'transparent';
+    t.style.color = '';
+    t.style.borderColor = '';
+  });
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'eng') {
+    event.target.style.background = 'var(--gold)';
+    event.target.style.color = '#07111C';
+    event.target.style.borderColor = 'var(--gold)';
+  }
+}
+
+// ── Seed data embedded in file (survives download) ────────────────────────────
+// This gets rewritten when you click "Save to File"
+const SEED_DATA = [];
+
+// ── localStorage key ─────────────────────────────────────────────────────────
+const STORAGE_KEY = 'p44_qa_eng_feedback_v2';
+
+function loadItems() {
+  // 1. Try localStorage first (fastest, works after first save in browser)
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (parsed && parsed.length > 0) return parsed;
+    }
+  } catch(e) {}
+  // 2. Fall back to seed data embedded in this file
+  return JSON.parse(JSON.stringify(SEED_DATA));
+}
+
+function saveItems() {
+  // Always save to localStorage
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbackItems));
+  } catch(e) { console.warn('localStorage save failed', e); }
+}
+
+function exportSaveFile() {
+  // Re-serialize this entire HTML file with current feedbackItems baked into SEED_DATA
+  const currentHtml = document.documentElement.outerHTML;
+  const newSeed = `const SEED_DATA = ${JSON.stringify(feedbackItems)};`;
+  const updated = currentHtml.replace(/const SEED_DATA = \[.*?\];/s, newSeed);
+  const blob = new Blob([updated], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'agent_qa_dashboard_saved.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('✓ File saved with all feedback data embedded!');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = `
+      position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+      background:var(--green);color:#052E16;padding:10px 24px;border-radius:8px;
+      font-weight:700;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;
+      font-family:'Inter',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.4);
+    `;
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 3000);
+}
+
+let feedbackItems = loadItems();
+
+// ── UI helpers ───────────────────────────────────────────────────────────────
+function toggleAddForm() {
+  const f = document.getElementById('addForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+  if (f.style.display === 'block') {
+    setTimeout(() => document.getElementById('feedbackText').focus(), 50);
+  }
+}
+
+function cancelAdd() {
+  document.getElementById('addForm').style.display = 'none';
+  document.getElementById('feedbackText').value = '';
+}
+
+function submitFeedback() {
+  const txt = document.getElementById('feedbackText').value.trim();
+  if (!txt) {
+    const ta = document.getElementById('feedbackText');
+    ta.style.borderColor = 'var(--red)';
+    ta.placeholder = 'Please enter some feedback before submitting...';
+    setTimeout(() => {
+      ta.style.borderColor = 'var(--border)';
+      ta.placeholder = 'Describe the issue, observation, or action item for engineering — no length limit...';
+    }, 1800);
+    return;
+  }
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  const timeStr = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+  feedbackItems.unshift({ id: Date.now(), text: txt, date: dateStr, time: timeStr, status: 'pending' });
+  saveItems();
+  document.getElementById('feedbackText').value = '';
+  document.getElementById('addForm').style.display = 'none';
+  renderFeedback();
+  showToast('✓ Feedback saved!');
+}
+
+function markStatus(id, status) {
+  const item = feedbackItems.find(f => f.id === id);
+  if (!item) return;
+  item.status = status;
+  if (status === 'completed') {
+    item.completedDate = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+  }
+  saveItems();
+  renderFeedback();
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/\n/g,'<br>');
+}
+
+function renderFeedback() {
+  const pending   = feedbackItems.filter(f => f.status !== 'completed');
+  const completed = feedbackItems.filter(f => f.status === 'completed');
+
+  document.getElementById('pendingCount').textContent   = pending.length;
+  document.getElementById('completedCount').textContent = completed.length;
+
+  // ── Pending ──────────────────────────────────────────────────────────────
+  const pl = document.getElementById('pendingList');
+  if (pending.length === 0) {
+    pl.innerHTML = `<div style="color:var(--t3);font-size:13px;font-style:italic;padding:28px 0;text-align:center;border:1px dashed var(--border);border-radius:8px;">
+      No pending feedback yet. Click <strong style="color:var(--gold)">＋ Add Feedback</strong> to log the first item.
+    </div>`;
+  } else {
+    pl.innerHTML = pending.map((item, idx) => {
+      const accentColor = item.status==='yes' ? 'var(--green)' : item.status==='no' ? 'var(--red)' : 'var(--amber)';
+      const badge = item.status==='yes'
+        ? `<span style="background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green);border-radius:5px;padding:2px 10px;font-size:11px;font-weight:600;">✓ Acknowledged</span>`
+        : item.status==='no'
+        ? `<span style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red);border-radius:5px;padding:2px 10px;font-size:11px;font-weight:600;">✗ Not Applicable</span>`
+        : `<span style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber);border-radius:5px;padding:2px 10px;font-size:11px;font-weight:600;">⏳ Awaiting Response</span>`;
+      return `
+      <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid ${accentColor};border-radius:10px;padding:16px 18px;margin-bottom:10px;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:13px;color:var(--t1);line-height:1.75;">${escHtml(item.text)}</div>
+            <div style="margin-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <span style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;">📅 ${item.date} · ${item.time}</span>
+              ${badge}
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;align-items:center;flex-wrap:wrap;">
+            <button onclick="markStatus(${item.id},'yes')" style="
+              padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+              background:${item.status==='yes'?'var(--green)':'transparent'};
+              color:${item.status==='yes'?'#052E16':'var(--green)'};
+              border:1px solid var(--green);transition:all .15s;
+            ">Yes</button>
+            <button onclick="markStatus(${item.id},'no')" style="
+              padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+              background:${item.status==='no'?'var(--red)':'transparent'};
+              color:${item.status==='no'?'#2D0A0A':'var(--red)'};
+              border:1px solid var(--red);transition:all .15s;
+            ">No</button>
+            <button onclick="markStatus(${item.id},'completed')" style="
+              padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+              background:var(--green);color:#052E16;border:1px solid var(--green);transition:all .15s;
+            ">✓ Completed</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Completed ────────────────────────────────────────────────────────────
+  const cl = document.getElementById('completedList');
+  if (completed.length === 0) {
+    cl.innerHTML = `<div style="color:var(--t3);font-size:13px;font-style:italic;padding:28px 0;text-align:center;border:1px dashed var(--border);border-radius:8px;">No completed items yet.</div>`;
+  } else {
+    cl.innerHTML = completed.map(item => `
+      <div style="background:var(--green-bg);border:1px solid var(--green-bd);border-left:4px solid var(--green);border-radius:10px;padding:14px 18px;margin-bottom:8px;opacity:0.88;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:13px;color:var(--t2);line-height:1.75;text-decoration:line-through;text-decoration-color:var(--green-bd);">${escHtml(item.text)}</div>
+            <div style="margin-top:8px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+              <span style="font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;">📅 Added: ${item.date} · ${item.time}</span>
+              <span style="font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace;">✓ Completed: ${item.completedDate}</span>
+            </div>
+          </div>
+          <span style="background:var(--green);color:#052E16;border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;flex-shrink:0;align-self:flex-start;">Completed</span>
+        </div>
+      </div>`
+    ).join('');
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  renderFeedback();
+});
+</script>
+</body>
+</html>
