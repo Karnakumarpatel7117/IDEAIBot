@@ -34,8 +34,8 @@
     background: var(--bg);
     color: var(--t1);
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
   /* ── TOP NAV ── */
@@ -54,8 +54,8 @@
     color: var(--accent); text-transform: uppercase;
     border: 1px solid var(--accent); border-radius: 4px; padding: 3px 8px;
   }
-  .topbar-title { font-size: 13px; font-weight: 600; color: var(--t1); }
-  .topbar-sub   { font-size: 11px; color: var(--t3); margin-top: 1px; }
+  .topbar-title { font-size: 16px; font-weight: 700; color: var(--t1); }
+  .topbar-sub   { font-size: 13px; color: var(--t3); margin-top: 1px; }
   .topbar-right { display: flex; gap: 8px; }
 
   /* ── VERSION TAB BAR ── */
@@ -71,13 +71,13 @@
     margin-right: 6px;
   }
   .ver-tab {
-    padding: 7px 20px; border-radius: 7px; font-size: 12px; font-weight: 600;
-    cursor: pointer; border: 1px solid var(--border); color: var(--t2);
-    background: transparent; transition: all .15s;
-    font-family: 'JetBrains Mono', monospace;
+    padding: 8px 22px; border-radius: 7px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border); color: var(--t3);
+    background: var(--card); transition: all .15s;
+    font-family: 'JetBrains Mono', monospace; opacity: 0.7;
   }
-  .ver-tab:hover  { border-color: var(--accent); color: var(--accent); }
-  .ver-tab.active { background: var(--accent); color: #ffffff; border-color: var(--accent); font-weight: 700; }
+  .ver-tab:hover  { border-color: var(--accent); color: var(--accent); opacity: 1; }
+  .ver-tab.active { background: var(--accent); color: #07111C; border-color: var(--accent); font-weight: 800; opacity: 1; box-shadow: 0 0 12px rgba(56,189,248,.35); }
 
   /* ── LAYOUT ── */
   .shell { max-width: 1180px; margin: 0 auto; padding: 28px 24px 60px; }
@@ -94,9 +94,9 @@
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
     background: var(--kpi-color, var(--accent));
   }
-  .kpi-val  { font-size: 26px; font-weight: 800; color: var(--kpi-color, var(--accent)); font-family: 'JetBrains Mono', monospace; line-height: 1; }
-  .kpi-lbl  { font-size: 10px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; }
-  .kpi-sub  { font-size: 11px; color: var(--t2); margin-top: 4px; }
+  .kpi-val  { font-size: 29px; font-weight: 800; color: var(--kpi-color, var(--accent)); font-family: 'JetBrains Mono', monospace; line-height: 1; }
+  .kpi-lbl  { font-size: 12px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; }
+  .kpi-sub  { font-size: 13px; color: var(--t2); margin-top: 4px; }
 
   /* ── VERSION PANEL ── */
   .ver-panel { display: none; }
@@ -110,16 +110,16 @@
     display: flex; align-items: center; justify-content: space-between;
     border-bottom: 2px solid var(--accent);
   }
-  .panel-title { font-size: 20px; font-weight: 700; color: var(--t1); }
-  .panel-date  { font-size: 16px; font-weight: 700; color: var(--accent2); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
-  .panel-meta  { font-size: 11px; color: var(--t3); margin-top: 3px; }
+  .panel-title { font-size: 23px; font-weight: 700; color: var(--t1); }
+  .panel-date  { font-size: 18px; font-weight: 700; color: var(--accent2); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+  .panel-meta  { font-size: 13px; color: var(--t3); margin-top: 3px; }
   .panel-kpis  { display: flex; gap: 10px; }
   .mini-kpi {
     padding: 8px 16px; border-radius: 8px; text-align: center;
     border: 1px solid; min-width: 80px;
   }
-  .mini-kpi-val { font-size: 18px; font-weight: 800; font-family: 'JetBrains Mono', monospace; line-height:1; }
-  .mini-kpi-lbl { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; opacity: .7; }
+  .mini-kpi-val { font-size: 21px; font-weight: 800; font-family: 'JetBrains Mono', monospace; line-height:1; }
+  .mini-kpi-lbl { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; opacity: .7; }
 
   /* ── TWO-COL BODY ── */
   .panel-body {
@@ -147,8 +147,8 @@
   .tbl { width: 100%; border-collapse: collapse; }
   .tbl tr:first-child td { border-top: none; }
   .tbl td {
-    padding: 9px 12px; border-top: 1px solid var(--border);
-    vertical-align: top; font-size: 12px;
+    padding: 10px 12px; border-top: 1px solid var(--border);
+    vertical-align: top; font-size: 14px;
   }
   .tbl td:first-child {
     width: 38%; font-weight: 600; color: var(--t2);
@@ -164,7 +164,7 @@
   .chip {
     background: #0F2A44; border: 1px solid #1D4ED8;
     color: #93C5FD; border-radius: 5px;
-    padding: 2px 8px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600;
+    padding: 3px 9px; font-size: 13px; font-family: 'JetBrains Mono', monospace; font-weight: 600;
   }
 
   /* ── REMARK ROW ── */
@@ -186,14 +186,14 @@
     border-radius: 8px; border-left: 4px solid;
     padding: 10px 12px; position: relative;
   }
-  .tree-node-label { font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tree-node-label { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .tree-node-sub   { font-size: 10px; color: var(--t3); margin-top: 2px; }
   .tree-node-chips { margin-top: 6px; }
   .tree-node-child {
     margin-left: 18px; border-radius: 6px; border-left: 3px solid;
     padding: 8px 10px; margin-top: 4px;
   }
-  .tree-node-child .tree-node-label { font-size: 11.5px; }
+  .tree-node-child .tree-node-label { font-size: 13.5px; }
 
   .n-green  { background: var(--green-bg);  border-color: var(--green);  color: var(--green);  }
   .n-red    { background: var(--red-bg);    border-color: var(--red);    color: var(--red);    }
@@ -235,7 +235,7 @@
   /* ── FAIL ROW ── */
   .fail-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; }
   .fail-row + .fail-row { border-top: 1px solid var(--border); }
-  .fail-name { flex: 1; font-size: 12px; color: var(--t2); font-weight: 600; }
+  .fail-name { flex: 1; font-size: 14px; color: var(--t2); font-weight: 600; }
   .fail-bar  { width: 80px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
   .fail-fill { height: 100%; background: var(--red); border-radius: 3px; }
   .fail-pct  { font-size: 11px; color: var(--red); font-weight: 700; min-width: 36px; text-align: right; font-family: 'JetBrains Mono', monospace; }
@@ -246,13 +246,13 @@
   /* ── OVERALL TABLE ── */
   .ov-table { width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
   .ov-table th {
-    background: var(--card); color: var(--accent2); font-size: 10px;
+    background: var(--card); color: var(--accent2); font-size: 12px;
     font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
-    padding: 10px 14px; text-align: left;
+    padding: 12px 14px; text-align: left;
   }
   .ov-table td {
-    background: var(--surface); padding: 10px 14px; font-size: 12px;
-    border-top: 1px solid var(--border); color: var(--t1);
+    background: var(--surface); padding: 11px 12px; font-size: 14px;
+    border-top: 1px solid var(--border); color: var(--t1); word-break: break-word;
   }
   .ov-table tr:nth-child(even) td { background: var(--card); }
   .ov-table td:first-child { font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent); }
@@ -265,7 +265,7 @@
   .sec-wrap { margin-bottom: 14px; }
   .sec-hdr {
     padding: 8px 14px; border-radius: 7px 7px 0 0;
-    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
     display: flex; align-items: center; gap: 8px;
   }
 
@@ -282,7 +282,7 @@
   <div class="topbar-left">
     <div class="topbar-logo">p44</div>
     <div>
-      <div class="topbar-title">IDE FTL PUSH API TRACKING</div>
+      <div class="topbar-title">IDE FTL PUSH API Tracking</div>
       <div class="topbar-sub">OTR Support · PUSH API Tracking Investigation Quality · 18 Jun – 25 Jun 2026</div>
     </div>
   </div>
@@ -293,6 +293,8 @@
 <div class="ver-tabbar">
   <span class="ver-tabbar-label">View:</span>
   <button class="ver-tab active" onclick="showVer('all', this)">Overview</button>
+  <button class="ver-tab" onclick="showVer('v1', this)">V1</button>
+  <button class="ver-tab" onclick="showVer('v2', this)">V2</button>
   <button class="ver-tab" onclick="showVer('v3', this)">V3</button>
   <button class="ver-tab" onclick="showVer('v4', this)">V4</button>
   <button class="ver-tab" onclick="showVer('v5', this)">V5</button>
@@ -306,23 +308,23 @@
 <div id="kpi-strip" class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
   <div class="kpi" style="--kpi-color:var(--accent)">
     <div class="kpi-lbl">Versions Tested</div>
-    <div class="kpi-val">4</div>
-    <div class="kpi-sub">V3 · V4 · V5 · V6</div>
+    <div class="kpi-val">6</div>
+    <div class="kpi-sub">V1 · V2 · V3 · V4 · V5 · V6</div>
   </div>
   <div class="kpi" style="--kpi-color:var(--accent2)">
     <div class="kpi-lbl">Total Tickets Tested</div>
-    <div class="kpi-val">30</div>
-    <div class="kpi-sub">Across all versions</div>
+    <div class="kpi-val">52</div>
+    <div class="kpi-sub">Across all 6 versions</div>
   </div>
   <div class="kpi" style="--kpi-color:var(--green)">
     <div class="kpi-lbl">Triage %</div>
     <div class="kpi-val">90%</div>
-    <div class="kpi-sub">27 of 30 correctly triaged</div>
+    <div class="kpi-sub">47 of 52 correctly triaged</div>
   </div>
   <div class="kpi" style="--kpi-color:var(--amber)">
     <div class="kpi-lbl">Correct Investigation %</div>
-    <div class="kpi-val">26%</div>
-    <div class="kpi-sub">7 of 27 eligible tickets</div>
+    <div class="kpi-val">14%</div>
+    <div class="kpi-sub">6 of 44 eligible tickets</div>
   </div>
 </div>
 
@@ -334,14 +336,26 @@
   <div class="panel-header">
     <div>
       <div class="panel-title">All Versions — Comparative Overview</div>
-      <div class="panel-date">18 Jun 2026 – 25 Jun 2026</div>
-      <div class="panel-meta">Versions 3, 4, 5, 6  ·  p44 OTR Support</div>
+      <div class="panel-date">V1 – V6</div>
+      <div class="panel-meta">Versions 1, 2, 3, 4, 5, 6  ·  p44 OTR Support</div>
     </div>
   </div>
 
   <div style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:20px 24px;">
 
-    <table class="ov-table">
+    <table class="ov-table" style="table-layout:fixed;width:100%;">
+      <colgroup>
+        <col style="width:7%">
+        <col style="width:10%">
+        <col style="width:7%">
+        <col style="width:8%">
+        <col style="width:8%">
+        <col style="width:9%">
+        <col style="width:9%">
+        <col style="width:7%">
+        <col style="width:24%">
+        <col style="width:11%">
+      </colgroup>
       <thead>
         <tr>
           <th>Version</th>
@@ -358,8 +372,32 @@
       </thead>
       <tbody>
         <tr>
+          <td>V1</td>
+          <td>—</td>
+          <td>2</td>
+          <td>2</td>
+          <td><span class="stat-good">100%</span></td>
+          <td>2</td>
+          <td>0</td>
+          <td><span class="stat-bad">0%</span></td>
+          <td>Unknown ×2</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>V2</td>
+          <td>—</td>
+          <td>20</td>
+          <td>18</td>
+          <td><span class="stat-warn">90%</span></td>
+          <td>15</td>
+          <td>0</td>
+          <td><span class="stat-bad">0%</span></td>
+          <td>Unknown ×13</td>
+          <td>—</td>
+        </tr>
+        <tr>
           <td>V3</td>
-          <td>18-Jun-26</td>
+          <td style="white-space:nowrap;">18-Jun-26</td>
           <td>5</td>
           <td>5</td>
           <td><span class="stat-good">100%</span></td>
@@ -371,7 +409,7 @@
         </tr>
         <tr>
           <td>V4</td>
-          <td>22-Jun-26</td>
+          <td style="white-space:nowrap;">22-Jun-26</td>
           <td>5</td>
           <td>4</td>
           <td><span class="stat-warn">80%</span></td>
@@ -383,7 +421,7 @@
         </tr>
         <tr>
           <td>V5</td>
-          <td>23-Jun-26</td>
+          <td style="white-space:nowrap;">23-Jun-26</td>
           <td>10</td>
           <td>8</td>
           <td><span class="stat-warn">80%</span></td>
@@ -395,13 +433,13 @@
         </tr>
         <tr>
           <td>V6</td>
-          <td>25-Jun-26</td>
+          <td style="white-space:nowrap;">25-Jun-26</td>
           <td>10</td>
           <td>10</td>
           <td><span class="stat-good">100%</span></td>
           <td>10</td>
-          <td>5</td>
-          <td><span class="stat-warn">50%</span></td>
+          <td>4</td>
+          <td><span class="stat-warn">40%</span></td>
           <td>Unknown ×2</td>
           <td>4</td>
         </tr>
@@ -409,63 +447,81 @@
     </table>
 
     <!-- Trend note -->
-    <div style="margin-top:16px;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--t2);display:flex;gap:24px;flex-wrap:wrap;">
-      <span>📈 <strong style="color:var(--green)">Triage</strong> improved from 80% → 100% (V5→V6)</span>
-      <span>📈 <strong style="color:var(--amber)">Investigation</strong> improved from 0% → 50% (V3→V6)</span>
-      <span>⚠️ <strong style="color:var(--red)">Unknown</strong> fail reason persists across all versions</span>
-      <span>✅ <strong style="color:var(--green)">V6</strong> is the best-performing version to date</span>
+    <div style="margin-top:16px;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:8px;display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:14px;color:var(--t2);">📈 <strong style="color:var(--green)">Triage</strong> improved from 80% → 100% (V4/V5 → V6)</div>
+      <div style="font-size:14px;color:var(--t2);">📈 <strong style="color:var(--amber)">Investigation</strong> improved from 0% → 40% (V1–V4 → V6)</div>
+      <div style="font-size:14px;color:var(--t2);">⚠️ <strong style="color:var(--red)">Unknown</strong> fail reason persists across all versions</div>
+      <div style="font-size:14px;color:var(--t2);">✅ <strong style="color:var(--green)">V6</strong> is the best-performing version to date</div>
     </div>
 
     <!-- Investigation breakdown bars per version -->
     <div style="margin-top:20px;">
       <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent2);margin-bottom:12px;">Investigation Breakdown by Version</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
 
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V3</div>
-          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
+          <div style="font-size:13px;font-weight:700;color:var(--t2);width:28px;font-family:'JetBrains Mono',monospace;">V1</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:20px;">
+            <div class="bk-seg" style="background:var(--red);width:100%">2 Incorrect</div>
+          </div>
+          <div style="font-size:12px;color:var(--t3);width:220px;">2 Incorrect Investigation</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:13px;font-weight:700;color:var(--t2);width:28px;font-family:'JetBrains Mono',monospace;">V2</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:20px;">
+            <div class="bk-seg" style="background:var(--red);width:66.7%">10</div>
+            <div class="bk-seg" style="background:var(--amber);width:13.3%;color:#07111C">2</div>
+            <div class="bk-seg" style="background:var(--purple);width:20%;color:#fff">3</div>
+          </div>
+          <div style="font-size:12px;color:var(--t3);width:220px;">10 Incorrect · 2 Partial · 3 Out of Scope</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:13px;font-weight:700;color:var(--t2);width:28px;font-family:'JetBrains Mono',monospace;">V3</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:20px;">
             <div class="bk-seg" style="background:var(--red);width:20%">1</div>
             <div class="bk-seg" style="background:var(--amber);width:80%;color:#07111C">4</div>
           </div>
-          <div style="font-size:10px;color:var(--t3);width:120px;">1 Incorrect · 4 Not Inv</div>
+          <div style="font-size:12px;color:var(--t3);width:220px;">1 Incorrect · 4 Not Investigated</div>
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V4</div>
-          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
-            <div class="bk-seg" style="background:var(--amber);width:100%;color:#07111C">4</div>
+          <div style="font-size:13px;font-weight:700;color:var(--t2);width:28px;font-family:'JetBrains Mono',monospace;">V4</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:20px;">
+            <div class="bk-seg" style="background:var(--amber);width:100%;color:#07111C">4 Not Investigated</div>
           </div>
-          <div style="font-size:10px;color:var(--t3);width:120px;">4 Not Investigated</div>
+          <div style="font-size:12px;color:var(--t3);width:220px;">4 Not Investigated</div>
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V5</div>
-          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
+          <div style="font-size:13px;font-weight:700;color:var(--t2);width:28px;font-family:'JetBrains Mono',monospace;">V5</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:20px;">
             <div class="bk-seg" style="background:var(--green);width:25%">2</div>
             <div class="bk-seg" style="background:var(--amber);width:12.5%">1</div>
             <div class="bk-seg" style="background:var(--amber);width:62.5%;opacity:.6;color:#07111C">5</div>
           </div>
-          <div style="font-size:10px;color:var(--t3);width:120px;">2 Correct · 1 Partial · 5 Not Inv</div>
+          <div style="font-size:12px;color:var(--t3);width:220px;">2 Correct · 1 Partial · 5 Not Investigated</div>
         </div>
 
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:11px;font-weight:700;color:var(--t2);width:24px;font-family:'JetBrains Mono',monospace;">V6</div>
-          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:18px;">
-            <div class="bk-seg" style="background:var(--green);width:50%">5</div>
-            <div class="bk-seg" style="background:var(--red);width:0%">0</div>
-            <div class="bk-seg" style="background:var(--orange);width:30%;color:#07111C">3</div>
-            <div class="bk-seg" style="background:var(--amber);width:20%;color:#07111C">2</div>
+          <div style="font-size:13px;font-weight:700;color:var(--t2);width:28px;font-family:'JetBrains Mono',monospace;">V6</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:20px;">
+            <div class="bk-seg" style="background:var(--green);width:44.4%">4</div>
+            <div class="bk-seg" style="background:var(--orange);width:33.3%;color:#07111C">3</div>
+            <div class="bk-seg" style="background:var(--amber);width:22.3%;color:#07111C">2</div>
           </div>
-          <div style="font-size:10px;color:var(--t3);width:120px;">5 Correct · 0 Incorr · 3 Half · 2 Not Inv</div>
+          <div style="font-size:12px;color:var(--t3);width:220px;">4 Correct · 3 Half · 2 Not Investigated</div>
         </div>
 
       </div>
       <!-- legend -->
-      <div class="bk-labels" style="margin-top:10px;">
-        <div class="bk-lbl"><div class="bk-dot" style="background:var(--green)"></div><span style="color:var(--t2)">Correct</span></div>
-        <div class="bk-lbl"><div class="bk-dot" style="background:var(--red)"></div><span style="color:var(--t2)">Incorrect</span></div>
-        <div class="bk-lbl"><div class="bk-dot" style="background:var(--orange)"></div><span style="color:var(--t2)">Half</span></div>
-        <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Partial / Not Investigated</span></div>
+      <div class="bk-labels" style="margin-top:12px;">
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--green)"></div><span style="color:var(--t2);font-size:13px;">Correct</span></div>
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--red)"></div><span style="color:var(--t2);font-size:13px;">Incorrect</span></div>
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--orange)"></div><span style="color:var(--t2);font-size:13px;">Half</span></div>
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2);font-size:13px;">Partial / Not Investigated</span></div>
+        <div class="bk-lbl"><div class="bk-dot" style="background:var(--purple)"></div><span style="color:var(--t2);font-size:13px;">Incorrectly Out of Scope</span></div>
       </div>
     </div>
 
@@ -475,6 +531,246 @@
 <!-- ══════════════════════════════════════════════════════════════════════════
      VERSION PANELS MACRO
 ════════════════════════════════════════════════════════════════════════════ -->
+
+<!-- ── V3 ─────────────────────────────────────────────────────────────────── -->
+<!-- ── V1 ─────────────────────────────────────────────────────────────────── -->
+<div id="panel-v1" class="ver-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Version 1 — Agent QA Run</div>
+      <div class="panel-date">—</div>
+      <div class="panel-meta">p44 OTR Support  ·  PUSH API Tracking</div>
+    </div>
+    <div class="panel-kpis">
+      <div class="mini-kpi" style="border-color:var(--accent);color:var(--accent)">
+        <div class="mini-kpi-val">2</div><div class="mini-kpi-lbl">Tickets</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--green);color:var(--green)">
+        <div class="mini-kpi-val">100%</div><div class="mini-kpi-lbl">Triage</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--red);color:var(--red)">
+        <div class="mini-kpi-val">0%</div><div class="mini-kpi-lbl">Inv %</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <!-- LEFT -->
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent)">
+          <span>📋</span> Ticket Overview
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Tickets Tested</td><td>2</td></tr>
+            <tr><td>Ticket IDs</td><td><div class="chips"><span class="chip">2368</span><span class="chip">2369</span></div></td></tr>
+            <tr><td>Run Date</td><td>—</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)">
+          <span>✓</span> Triage Accuracy
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Yes / No / OOS</td><td><span class="stat-good">2</span> / 0 / 0</td></tr>
+            <tr><td>Triage %</td><td><span class="stat-good">100%</span> (2 of 2)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">
+          <span>🔍</span> Investigation Quality
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Eligible</td><td>2 tickets</td></tr>
+            <tr><td>Breakdown</td><td>Incorrect: 2</td></tr>
+            <tr><td>Investigation %</td><td><span class="stat-bad">0%</span> (0 of 2 eligible)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)">
+          <span>⚠</span> Fail Reasons
+        </div>
+        <div class="tbl-wrap" style="overflow:hidden;">
+          <div class="fail-row" style="background:var(--card)">
+            <div class="fail-name">Unknown</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:100%"></div></div>
+            <div class="fail-pct">100%</div>
+            <div style="font-size:11px;color:var(--t3)">2 tickets</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT -->
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">
+          <span>🌿</span> Investigation Tree
+        </div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px;">
+          <div class="tree">
+            <div class="tree-node n-green">
+              <div class="tree-node-label">Triage: Yes <span class="pill pill-green">✓ 2/2</span></div>
+              <div class="tree-node-sub">100% triage accuracy</div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2368</span><span class="chip">2369</span></div></div>
+              <div class="tree-node-child n-red">
+                <div class="tree-node-label">Incorrect Investigation <span class="pill pill-red">✗ 2</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2368</span><span class="chip">2369</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">Investigation Breakdown</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px 14px;">
+          <div class="bk-bar">
+            <div class="bk-seg" style="background:var(--red);width:100%">2</div>
+          </div>
+          <div class="bk-labels" style="margin-top:8px;">
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--red)"></div><span style="color:var(--t2)">Incorrect Investigation (2) — 100%</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:4px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:6px;">★ Remarks</div>
+        <div style="color:var(--t3);font-size:12px;font-style:italic;">No remarks recorded for V1.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── V2 ─────────────────────────────────────────────────────────────────── -->
+<div id="panel-v2" class="ver-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Version 2 — Agent QA Run</div>
+      <div class="panel-date">—</div>
+      <div class="panel-meta">p44 OTR Support  ·  PUSH API Tracking</div>
+    </div>
+    <div class="panel-kpis">
+      <div class="mini-kpi" style="border-color:var(--accent);color:var(--accent)">
+        <div class="mini-kpi-val">20</div><div class="mini-kpi-lbl">Tickets</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--amber);color:var(--amber)">
+        <div class="mini-kpi-val">90%</div><div class="mini-kpi-lbl">Triage</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--red);color:var(--red)">
+        <div class="mini-kpi-val">0%</div><div class="mini-kpi-lbl">Inv %</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <!-- LEFT -->
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent)">
+          <span>📋</span> Ticket Overview
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Tickets Tested</td><td>20</td></tr>
+            <tr><td>Ticket IDs</td><td><div class="chips"><span class="chip">2370</span><span class="chip">2371</span><span class="chip">2372</span><span class="chip">2373</span><span class="chip">2374</span><span class="chip">2375</span><span class="chip">2376</span><span class="chip">2377</span><span class="chip">2378</span><span class="chip">2379</span><span class="chip">2380</span><span class="chip">2381</span><span class="chip">2382</span><span class="chip">2383</span><span class="chip">2384</span><span class="chip">2385</span><span class="chip">2386</span><span class="chip">2387</span><span class="chip">2388</span><span class="chip">2389</span></div></td></tr>
+            <tr><td>Run Date</td><td>—</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">
+          <span>✓</span> Triage Accuracy
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Yes / No / OOS</td><td>18 / <span class="stat-bad">2</span> / 0</td></tr>
+            <tr><td>Triage %</td><td><span class="stat-warn">90%</span> (18 of 20)</td></tr>
+            <tr><td>Wrong ID</td><td><div class="chips"><span class="chip">2379</span><span class="chip">2383</span></div> — Random Issue Type</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)">
+          <span>🔍</span> Investigation Quality
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><td>Eligible</td><td>15 PUSH tickets (triage Yes)</td></tr>
+            <tr><td>Breakdown</td><td>Incorrect: 10  ·  Partial: 2  ·  Out of Scope: 3</td></tr>
+            <tr><td>Investigation %</td><td><span class="stat-bad">0%</span> (0 of 15 eligible)</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)">
+          <span>⚠</span> Fail Reasons
+        </div>
+        <div class="tbl-wrap" style="overflow:hidden;">
+          <div class="fail-row" style="background:var(--card)">
+            <div class="fail-name">Unknown</div>
+            <div class="fail-bar"><div class="fail-fill" style="width:100%"></div></div>
+            <div class="fail-pct">100%</div>
+            <div style="font-size:11px;color:var(--t3)">13 tickets</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT -->
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">
+          <span>🌿</span> Investigation Tree
+        </div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px;">
+          <div class="tree">
+            <div class="tree-node n-green">
+              <div class="tree-node-label">Triage: Yes <span class="pill pill-green">✓ 18/20</span></div>
+              <div class="tree-node-sub">90% triage accuracy</div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2370</span><span class="chip">2371</span><span class="chip">2372</span><span class="chip">2373</span><span class="chip">2374</span><span class="chip">2375</span><span class="chip">2376</span><span class="chip">2377</span><span class="chip">2378</span><span class="chip">2380</span><span class="chip">2381</span><span class="chip">2382</span><span class="chip">2384</span><span class="chip">2385</span><span class="chip">2386</span><span class="chip">2387</span><span class="chip">2388</span><span class="chip">2389</span></div></div>
+              <div class="tree-node-child n-red">
+                <div class="tree-node-label">Incorrect Investigation <span class="pill pill-red">✗ 10</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2370</span><span class="chip">2371</span><span class="chip">2373</span><span class="chip">2374</span><span class="chip">2376</span><span class="chip">2377</span><span class="chip">2378</span><span class="chip">2380</span><span class="chip">2384</span><span class="chip">2386</span></div></div>
+              </div>
+              <div class="tree-node-child n-amber">
+                <div class="tree-node-label">Partial – No Conclusion <span class="pill pill-amber">~ 2</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2372</span><span class="chip">2375</span></div></div>
+              </div>
+              <div class="tree-node-child n-purple">
+                <div class="tree-node-label">Incorrectly Out of Scope <span class="pill pill-purple">— 3</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2387</span><span class="chip">2388</span><span class="chip">2389</span></div></div>
+              </div>
+            </div>
+            <div class="tree-node n-red">
+              <div class="tree-node-label">Triage: No — Wrong ID <span class="pill pill-red">✗ 2</span></div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2379</span><span class="chip">2383</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">Investigation Breakdown</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px 14px;">
+          <div class="bk-bar">
+            <div class="bk-seg" style="background:var(--red);width:66.7%">10</div>
+            <div class="bk-seg" style="background:var(--amber);width:13.3%;color:#07111C">2</div>
+            <div class="bk-seg" style="background:var(--purple);width:20%;color:#fff">3</div>
+          </div>
+          <div class="bk-labels" style="margin-top:8px;">
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--red)"></div><span style="color:var(--t2)">Incorrect (10) — 66.7%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Partial (2) — 13.3%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--purple)"></div><span style="color:var(--t2)">Out of Scope (3) — 20%</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:8px;margin-top:4px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:6px;">★ Remarks</div>
+        <div style="color:var(--t3);font-size:12px;font-style:italic;">No remarks recorded for V2.</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ── V3 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v3" class="ver-panel">
