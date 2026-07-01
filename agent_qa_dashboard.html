@@ -100,8 +100,9 @@
 
   /* ── VERSION PANEL ── */
   .ver-panel { display: none; }
-  .ver-panel.active { display: flex; justify-content: center; padding-top: 20px; }
+  .ver-panel.active { display: flex; justify-content: center; }
   .panel-card { width: 100%; max-width: 860px; }
+  #panel-all.active, #panel-eng.active { display: block; }
 
   .panel-header {
     background: var(--surface);
@@ -334,16 +335,18 @@
      OVERVIEW PANEL
 ════════════════════════════════════════════════════════════════════════════ -->
 <div id="panel-all" class="ver-panel active">
+  <div style="width:100%;">
 
-  <div class="panel-header">
-    <div>
-      <div class="panel-title">All Versions — Comparative Overview</div>
-      <div class="panel-date">V1 – V7</div>
-      <div class="panel-meta">Versions 1 – 7  ·  p44 OTR Support</div>
+    <!-- Title row above table -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div>
+        <div style="font-size:23px;font-weight:700;color:var(--t1);">All Versions — Comparative Overview</div>
+        <div style="font-size:13px;color:var(--t3);margin-top:3px;">Versions 1 – 7  ·  p44 OTR Support</div>
+      </div>
+      <div style="font-size:18px;font-weight:700;color:var(--accent2);font-family:'JetBrains Mono',monospace;">V1 – V7</div>
     </div>
-  </div>
 
-  <div style="background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:20px 24px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">
 
     <table class="ov-table" style="table-layout:fixed;width:100%;">
       <colgroup>
@@ -360,16 +363,16 @@
       </colgroup>
       <thead>
         <tr>
-          <th>Version</th>
-          <th>Date</th>
-          <th>Tickets</th>
-          <th>Triage Yes</th>
-          <th>Triage %</th>
-          <th>Inv Eligible</th>
-          <th>Correct Inv</th>
-          <th>Inv %</th>
-          <th>Fail Reasons</th>
-          <th>Remarks</th>
+          <th style="white-space:nowrap;">Version</th>
+          <th style="white-space:nowrap;">Date</th>
+          <th style="white-space:nowrap;">Tickets</th>
+          <th style="white-space:nowrap;">Triage Yes</th>
+          <th style="white-space:nowrap;">Triage %</th>
+          <th style="white-space:nowrap;">Inv Eligible</th>
+          <th style="white-space:nowrap;">Correct Inv</th>
+          <th style="white-space:nowrap;">Inv %</th>
+          <th style="white-space:nowrap;">Fail Reasons</th>
+          <th style="white-space:nowrap;">Remarks</th>
         </tr>
       </thead>
       <tbody>
@@ -548,8 +551,9 @@
       </div>
     </div>
 
-  </div>
-</div>
+  </div><!-- /surface card -->
+  </div><!-- /width wrapper -->
+</div><!-- /panel-all -->
 
 <!-- ══════════════════════════════════════════════════════════════════════════
      VERSION PANELS MACRO
@@ -1362,23 +1366,27 @@
 ════════════════════════════════════════════════════════════════════════════ -->
 <div id="panel-eng" class="ver-panel" style="max-width:860px;margin:0 auto;">
 
-  <div class="panel-header" style="border-bottom-color:var(--gold);">
-    <div>
-      <div class="panel-title">Engineering Feedback</div>
-      <div class="panel-date" style="color:var(--gold);">Last Version Feedback to Engineering</div>
-      <div class="panel-meta">Items flagged from QA runs for engineering review and action</div>
+  <!-- Header row: title + buttons on same line -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-bottom:2px solid var(--gold);border-radius:12px 12px 0 0;padding:18px 24px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:23px;font-weight:700;color:var(--t1);">Engineering Feedback</div>
+        <div style="font-size:18px;font-weight:700;color:var(--gold);margin-top:4px;font-family:'JetBrains Mono',monospace;">Last Version Feedback to Engineering</div>
+        <div style="font-size:13px;color:var(--t3);margin-top:3px;">Items flagged from QA runs for engineering review and action</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
+        <button id="addFeedbackBtn" onclick="toggleAddForm()" style="
+          background:var(--gold);color:#07111C;border:none;border-radius:8px;
+          padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;
+          font-family:'Inter',sans-serif;transition:opacity .15s;
+        ">＋ Add Feedback</button>
+        <button onclick="loadFromSupabase()" style="
+          background:transparent;color:var(--accent2);border:1px solid var(--accent2);border-radius:8px;
+          padding:10px 18px;font-size:12px;font-weight:600;cursor:pointer;
+          font-family:'Inter',sans-serif;
+        " title="Refresh feedback from database">↻ Refresh</button>
+      </div>
     </div>
-    <button id="addFeedbackBtn" onclick="toggleAddForm()" style="
-      background:var(--gold);color:#07111C;border:none;border-radius:8px;
-      padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;
-      font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;
-      transition:opacity .15s;
-    ">＋ Add Feedback</button>
-    <button onclick="loadFromSupabase()" style="
-      background:transparent;color:var(--accent2);border:1px solid var(--accent2);border-radius:8px;
-      padding:10px 18px;font-size:12px;font-weight:600;cursor:pointer;
-      font-family:'Inter',sans-serif;margin-left:8px;
-    " title="Refresh feedback from database">↻ Refresh</button>
   </div>
 
   <!-- ADD FORM -->
@@ -1492,14 +1500,7 @@ function showVer(id, btn) {
   });
   // Show/hide KPI strip — only on Overview
   var kpi = document.getElementById('kpi-strip');
-  var shell = document.querySelector('.shell');
-  if (id === 'all') {
-    if (kpi) kpi.style.display = '';
-    if (shell) shell.style.paddingTop = '28px';
-  } else {
-    if (kpi) kpi.style.display = 'none';
-    if (shell) shell.style.paddingTop = '0';
-  }
+  if (kpi) kpi.style.display = (id === 'all') ? '' : 'none';
   document.getElementById('panel-' + id).classList.add('active');
   if (btn) {
     btn.classList.add('active');
