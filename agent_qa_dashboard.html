@@ -299,6 +299,7 @@
   <button class="ver-tab" onclick="showVer('v4', this)">V4</button>
   <button class="ver-tab" onclick="showVer('v5', this)">V5</button>
   <button class="ver-tab" onclick="showVer('v6', this)">V6</button>
+  <button class="ver-tab" onclick="showVer('v7', this)">V7</button>
   <button class="ver-tab" onclick="showVer('eng', this)" style="margin-left:auto">⚙ Feedback</button>
 </div>
 
@@ -308,23 +309,23 @@
 <div id="kpi-strip" class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
   <div class="kpi" style="--kpi-color:var(--accent)">
     <div class="kpi-lbl">Versions Tested</div>
-    <div class="kpi-val">6</div>
-    <div class="kpi-sub">V1 · V2 · V3 · V4 · V5 · V6</div>
+    <div class="kpi-val">7</div>
+    <div class="kpi-sub">V1 · V2 · V3 · V4 · V5 · V6 · V7</div>
   </div>
   <div class="kpi" style="--kpi-color:var(--accent2)">
     <div class="kpi-lbl">Total Tickets Tested</div>
-    <div class="kpi-val">52</div>
-    <div class="kpi-sub">Across all 6 versions</div>
+    <div class="kpi-val">63</div>
+    <div class="kpi-sub">Across all 7 versions</div>
   </div>
   <div class="kpi" style="--kpi-color:var(--green)">
     <div class="kpi-lbl">Triage %</div>
-    <div class="kpi-val">90%</div>
-    <div class="kpi-sub">47 of 52 correctly triaged</div>
+    <div class="kpi-val">89%</div>
+    <div class="kpi-sub">56 of 63 correctly triaged</div>
   </div>
   <div class="kpi" style="--kpi-color:var(--amber)">
     <div class="kpi-lbl">Correct Investigation %</div>
-    <div class="kpi-val">14%</div>
-    <div class="kpi-sub">6 of 44 eligible tickets</div>
+    <div class="kpi-val">15%</div>
+    <div class="kpi-sub">7 of 47 eligible tickets</div>
   </div>
 </div>
 
@@ -336,8 +337,8 @@
   <div class="panel-header">
     <div>
       <div class="panel-title">All Versions — Comparative Overview</div>
-      <div class="panel-date">V1 – V6</div>
-      <div class="panel-meta">Versions 1, 2, 3, 4, 5, 6  ·  p44 OTR Support</div>
+      <div class="panel-date">V1 – V7</div>
+      <div class="panel-meta">Versions 1 – 7  ·  p44 OTR Support</div>
     </div>
   </div>
 
@@ -443,6 +444,18 @@
           <td>Unknown ×2</td>
           <td>4</td>
         </tr>
+        <tr>
+          <td>V7</td>
+          <td style="white-space:nowrap;">30-Jun-26</td>
+          <td>11</td>
+          <td>9</td>
+          <td><span class="stat-warn">82%</span></td>
+          <td>3</td>
+          <td>1</td>
+          <td><span class="stat-warn">33%</span></td>
+          <td>—</td>
+          <td>4</td>
+        </tr>
       </tbody>
     </table>
 
@@ -512,6 +525,15 @@
             <div class="bk-seg" style="background:var(--amber);width:22.3%;color:#07111C">2</div>
           </div>
           <div style="font-size:12px;color:var(--t3);width:220px;">4 Correct · 3 Half · 2 Not Investigated</div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:13px;font-weight:700;color:var(--t2);width:28px;font-family:'JetBrains Mono',monospace;">V7</div>
+          <div style="flex:1;display:flex;border-radius:5px;overflow:hidden;height:20px;">
+            <div class="bk-seg" style="background:var(--green);width:33.3%">1</div>
+            <div class="bk-seg" style="background:var(--amber);width:66.7%;color:#07111C">2</div>
+          </div>
+          <div style="font-size:12px;color:var(--t3);width:220px;">1 Correct · 2 Not Investigated</div>
         </div>
 
       </div>
@@ -1204,6 +1226,114 @@
             
             <div class="bk-lbl"><div class="bk-dot" style="background:var(--orange)"></div><span style="color:var(--t2)">Half (3) — 30%</span></div>
             <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2)">Not Investigated (2) — 20%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── V7 ─────────────────────────────────────────────────────────────────── -->
+<div id="panel-v7" class="ver-panel">
+  <div class="panel-header">
+    <div>
+      <div class="panel-title">Version 7 — Agent QA Run</div>
+      <div class="panel-date">30 Jun 2026</div>
+      <div class="panel-meta">p44 OTR Support  ·  PUSH API Tracking</div>
+    </div>
+    <div class="panel-kpis">
+      <div class="mini-kpi" style="border-color:var(--accent);color:var(--accent)">
+        <div class="mini-kpi-val">11</div><div class="mini-kpi-lbl">Tickets</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--amber);color:var(--amber)">
+        <div class="mini-kpi-val">82%</div><div class="mini-kpi-lbl">Triage</div>
+      </div>
+      <div class="mini-kpi" style="border-color:var(--amber);color:var(--amber)">
+        <div class="mini-kpi-val">33%</div><div class="mini-kpi-lbl">Inv %</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent)"><span>📋</span> Ticket Overview</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Tickets Tested</td><td>11</td></tr>
+          <tr><td>Ticket IDs</td><td><div class="chips"><span class="chip">2400</span><span class="chip">2401</span><span class="chip">2402</span><span class="chip">2403</span><span class="chip">2404</span><span class="chip">2405</span><span class="chip">2406</span><span class="chip">2407</span><span class="chip">2408</span><span class="chip">2409</span><span class="chip">2410</span></div></td></tr>
+          <tr><td>Run Date</td><td style="white-space:nowrap;">30-Jun-26</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)"><span>✓</span> Triage Accuracy</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Yes / No / OOS</td><td>9 / <span class="stat-bad">2</span> / 0</td></tr>
+          <tr><td>Triage %</td><td><span class="stat-warn">82%</span> (9 of 11)</td></tr>
+          <tr><td>Wrong ID</td><td><div class="chips"><span class="chip">2407</span><span class="chip">2408</span></div> — ELD GPS marked as FTL PUSH API</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)"><span>🔍</span> Investigation Quality</div>
+        <div class="tbl-wrap"><table class="tbl">
+          <tr><td>Eligible</td><td>3 PUSH tickets (triage Yes)</td></tr>
+          <tr><td>Breakdown</td><td>Correct: 1  ·  Not Investigated: 2</td></tr>
+          <tr><td>Investigation %</td><td><span class="stat-warn">33%</span> (1 of 3 eligible)</td></tr>
+        </table></div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--red-bg);border:1px solid var(--red-bd);color:var(--red)"><span>⚠</span> Fail Reasons</div>
+        <div class="tbl-wrap" style="overflow:hidden;">
+          <div style="padding:14px 12px;background:var(--card);font-size:13px;color:var(--t3);font-style:italic;">No fail reasons recorded for V7.</div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--rmk-bg);border:1px solid var(--rmk-bd);color:var(--gold)">★ Remarks</div>
+        <div class="rmk-wrap">
+          <table class="rmk-table">
+            <tr><td><span class="rmk-star">★</span>#2401</td><td>Out of scope but not exactly marked as out of scope</td></tr>
+            <tr><td><span class="rmk-star">★</span>#2407</td><td>ELD GPS Ticket marked as FTL PUSH API</td></tr>
+            <tr><td><span class="rmk-star">★</span>#2408</td><td>ELD GPS Ticket marked as FTL PUSH API</td></tr>
+            <tr><td><span class="rmk-star">★</span>#2409</td><td>Out of scope but not exactly marked as out of scope</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)"><span>🌿</span> Investigation Tree</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px;">
+          <div class="tree">
+            <div class="tree-node n-green">
+              <div class="tree-node-label">Triage: Yes <span class="pill pill-green">✓ 9/11</span></div>
+              <div class="tree-node-sub">82% triage accuracy</div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2400</span><span class="chip">2401</span><span class="chip">2402</span><span class="chip">2403</span><span class="chip">2404</span><span class="chip">2405</span><span class="chip">2406</span><span class="chip">2409</span><span class="chip">2410</span></div></div>
+              <div class="tree-node-child n-green">
+                <div class="tree-node-label">Correct Investigation <span class="pill pill-green">✓ 1</span></div>
+                <div class="tree-node-sub">33% of 3 PUSH eligible</div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2404</span></div></div>
+              </div>
+              <div class="tree-node-child n-amber">
+                <div class="tree-node-label">AI Not Able to Investigate <span class="pill pill-amber">? 2</span></div>
+                <div class="tree-node-chips" style="margin-top:4px"><div class="chips"><span class="chip">2405</span><span class="chip">2406</span></div></div>
+              </div>
+            </div>
+            <div class="tree-node n-red">
+              <div class="tree-node-label">Triage: No — Wrong ID <span class="pill pill-red">✗ 2</span></div>
+              <div class="tree-node-chips"><div class="chips"><span class="chip">2407</span><span class="chip">2408</span></div></div>
+              <div style="margin-top:6px;font-size:12px;font-style:italic;color:var(--rmk-t);background:var(--rmk-bg);border:1px solid var(--rmk-bd);border-radius:5px;padding:5px 8px;">★ ELD GPS tickets misidentified as FTL PUSH API</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sec-wrap">
+        <div class="sec-hdr" style="background:var(--card);border:1px solid var(--border);color:var(--accent2)">Investigation Breakdown</div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:12px 14px;">
+          <div class="bk-bar">
+            <div class="bk-seg" style="background:var(--green);width:33.3%">1</div>
+            <div class="bk-seg" style="background:var(--amber);width:66.7%;color:#07111C">2</div>
+          </div>
+          <div class="bk-labels" style="margin-top:8px;">
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--green)"></div><span style="color:var(--t2);font-size:13px;">Correct (1) — 33%</span></div>
+            <div class="bk-lbl"><div class="bk-dot" style="background:var(--amber)"></div><span style="color:var(--t2);font-size:13px;">Not Investigated (2) — 67%</span></div>
           </div>
         </div>
       </div>
