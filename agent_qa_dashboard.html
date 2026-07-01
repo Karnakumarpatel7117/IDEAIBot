@@ -100,7 +100,8 @@
 
   /* ── VERSION PANEL ── */
   .ver-panel { display: none; }
-  .ver-panel.active { display: block; }
+  .ver-panel.active { display: flex; justify-content: center; padding-top: 20px; }
+  .panel-card { width: 100%; max-width: 860px; }
 
   .panel-header {
     background: var(--surface);
@@ -557,6 +558,7 @@
 <!-- ── V3 ─────────────────────────────────────────────────────────────────── -->
 <!-- ── V1 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v1" class="ver-panel">
+  <div class="panel-card">
   <div class="panel-header">
     <div>
       <div class="panel-title">Version 1 — Agent QA Run</div>
@@ -664,10 +666,12 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- ── V2 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v2" class="ver-panel">
+  <div class="panel-card">
   <div class="panel-header">
     <div>
       <div class="panel-title">Version 2 — Agent QA Run</div>
@@ -792,10 +796,12 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- ── V3 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v3" class="ver-panel">
+  <div class="panel-card">
   <div class="panel-header">
     <div>
       <div class="panel-title">Version 3 — Agent QA Run</div>
@@ -915,10 +921,12 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- ── V4 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v4" class="ver-panel">
+  <div class="panel-card">
   <div class="panel-header">
     <div>
       <div class="panel-title">Version 4 — Agent QA Run</div>
@@ -1003,10 +1011,12 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- ── V5 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v5" class="ver-panel">
+  <div class="panel-card">
   <div class="panel-header">
     <div>
       <div class="panel-title">Version 5 — Agent QA Run</div>
@@ -1115,10 +1125,12 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- ── V6 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v6" class="ver-panel">
+  <div class="panel-card">
   <div class="panel-header">
     <div>
       <div class="panel-title">Version 6 — Agent QA Run</div>
@@ -1231,10 +1243,12 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
 
 <!-- ── V7 ─────────────────────────────────────────────────────────────────── -->
 <div id="panel-v7" class="ver-panel">
+  <div class="panel-card">
   <div class="panel-header">
     <div>
       <div class="panel-title">Version 7 — Agent QA Run</div>
@@ -1431,8 +1445,6 @@
   </div>
 </div>
 
-</div><!-- /shell -->
-
 <script>
 // ── Supabase config ───────────────────────────────────────────────────────────
 const SUPABASE_URL = 'https://tltyeuyctjpaodxdasfv.supabase.co';
@@ -1480,11 +1492,17 @@ function showVer(id, btn) {
   });
   // Show/hide KPI strip — only on Overview
   var kpi = document.getElementById('kpi-strip');
-  if (kpi) kpi.style.display = (id === 'all') ? '' : 'none';
+  var shell = document.querySelector('.shell');
+  if (id === 'all') {
+    if (kpi) kpi.style.display = '';
+    if (shell) shell.style.paddingTop = '28px';
+  } else {
+    if (kpi) kpi.style.display = 'none';
+    if (shell) shell.style.paddingTop = '0';
+  }
   document.getElementById('panel-' + id).classList.add('active');
   if (btn) {
     btn.classList.add('active');
-    // Feedback tab gets gold active style
     if (id === 'eng') {
       btn.style.background = 'var(--gold)';
       btn.style.color = '#07111C';
